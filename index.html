@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		
+		
+		let toDoList = {			
+
+				notes : [],
+
+				newTask : function(){
+
+					let taskToDo = prompt('What is the task?', ''); 
+
+					let check = this.notes.findIndex(function(item) {
+						
+						return item.toDo === taskToDo;
+						
+					});
+
+					if(check >= 0) {
+						alert('The same task is already exists!!')
+					} else {
+						let currentDate = new Date;
+
+						currentDate = currentDate.getDate() + '/' +currentDate.getMonth() + '/' + currentDate.getFullYear();
+
+						let getRandomId = Math.random().toString().slice(2,10);
+
+						let task = {
+							title : currentDate,
+							toDo : taskToDo,
+							isDone : false,
+							id : getRandomId,
+						}
+
+						this.notes.push(task);
+					}
+		
+				},
+
+				deleteTask : function(id){
+					let taskIndex = this.notes.findIndex(function(task) {
+						if(task.id === id) {
+							return task;
+						}
+					});
+
+					this.notes.splice(taskIndex, 1);
+				},
+
+				updateTask : function(id) {
+					let taskIndex = this.notes.findIndex(function(task) {
+						if(task.id === id) {
+							return task;
+						}
+					});
+
+					if(confirm('Update?')) {
+						let editTask = prompt('What to edit?','');
+						this.notes[taskIndex].toDo = editTask;
+					}
+				},
+
+				ifDoneTask : function(id) {
+					let taskIndex = this.notes.findIndex(function(task) {
+						if(task.id === id) {
+							return task;
+						}
+					});
+
+					this.notes[taskIndex].isDone = !this.notes[taskIndex].isDone;
+				},
+
+				showTasks : function() {
+					let totalTasks = this.notes.length;
+					let totalDoneTasks = this.notes.filter(function(task){
+						if(task.isDone === true){
+							return task;
+						}
+					}).length;
+
+					return 'Total tasks :' + totalTasks + ' ,\n' + ' Done tasks : ' + totalDoneTasks + '. Need to do : ' + (totalTasks - totalDoneTasks);
+				},
+
+				sortTasksByName : function() {
+					let sort = this.notes.sort(function(next , prev) {
+						if(next.toDo.toUpperCase() > prev.toDo.toUpperCase()) return 1;
+						if (next.toDo.toUpperCase() === prev.toDo.toUpperCase()) return 0;
+						if(next.toDo.toUpperCase() < prev.toDo.toUpperCase()) return -1 ;
+					})
+
+					return sort;
+				},
+
+				sortTasksByDone : function() {
+					let sort = this.notes.sort(function(next , prev) {
+						if(next.isDone > prev.isDone) return -1;
+						if (next.isDone === prev.isDone) return 0;
+						if(next.isDone < prev.isDone) return 1 ;
+					})
+ 
+					return sort;
+				}
+
+			};			
+
+			console.log(toDoList);	
+	
+	</script>
+</body>
+</html>
